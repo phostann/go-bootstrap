@@ -20,5 +20,5 @@ CREATE TABLE "users"
     "role"       role_enum      NOT NULL DEFAULT ('user'::role_enum),
     "created_at" timestamptz    NOT NULL DEFAULT (now()),
     "updated_at" timestamptz    NOT NULL DEFAULT (now()),
-    "delete_at"  timestamptz
+    "deleted_at"  timestamptz
 );
