@@ -21,6 +21,7 @@ func SetupRoutes(c *controllers.Controller, app *fiber.App, middleware *middlewa
 	// auth
 	{
 		v1.Post("/auth/login", c.Login)
+		v1.Get("/auth/profile", middleware.JWTProtected, c.GetProfile)
 		v1.Post("/auth/refresh", middleware.JWTRefreshProtected, c.Refresh)
 	}
 }

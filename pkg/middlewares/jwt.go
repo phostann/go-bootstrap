@@ -30,8 +30,8 @@ func (m *Middleware) JWTProtected(ctx *fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(response.Error(err))
 	}
-	if cliams, ok := token.Claims.(*CustomClaims); ok && token.Valid && cliams.Type == AccessToken {
-		ctx.Locals("cliams", cliams)
+	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid && claims.Type == AccessToken {
+		ctx.Locals("claims", claims)
 		return ctx.Next()
 	} else {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(response.Error(errors.New("invalid token")))
@@ -43,8 +43,8 @@ func (m *Middleware) JWTRefreshProtected(ctx *fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(response.Error(err))
 	}
-	if cliams, ok := token.Claims.(*CustomClaims); ok && token.Valid && cliams.Type == RefreshToken {
-		ctx.Locals("cliams", cliams)
+	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid && claims.Type == RefreshToken {
+		ctx.Locals("claims", claims)
 		return ctx.Next()
 	} else {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(response.Error(errors.New("invalid token")))

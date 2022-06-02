@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/jackc/pgx/v4"
@@ -80,6 +81,10 @@ func (a *App) Prepare() *App {
 		_ = conn.Close(context.Background())
 	})
 
+	a.app.Use(recover.New())
+	a.app.Use(logger.New())
+	a.app.Use(cors.New())
+
 	queries := postgres.New(conn)
 	service := services.NewService(queries)
 	controller := controllers.NewController(service, cfg)
@@ -87,18 +92,9 @@ func (a *App) Prepare() *App {
 
 	routes.SetupRoutes(controller, a.app, middleware)
 
-	a.app.Use(recover.New())
-	a.app.Use(logger.New())
-
 	return a
 }
 
 func (a *App) Run() {
-	v1 := a.app.Group("v1")
-	v1.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{
-			"message": "Hello World!",
-		})
-	})
 	a.start()
 }

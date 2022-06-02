@@ -32,9 +32,9 @@ func (e *GenderEnum) Scan(src interface{}) error {
 type RoleEnum string
 
 const (
-	RoleEnumEmployee RoleEnum = "employee"
-	RoleEnumCustomer RoleEnum = "customer"
 	RoleEnumAdmin    RoleEnum = "admin"
+	RoleEnumEmployee RoleEnum = "employee"
+	RoleEnumUser     RoleEnum = "user"
 )
 
 func (e *RoleEnum) Scan(src interface{}) error {
@@ -55,9 +55,9 @@ type User struct {
 	Password  string       `json:"password"`
 	Avatar    string       `json:"avatar"`
 	Email     string       `json:"email"`
+	Gender    GenderEnum   `json:"gender"`
+	Role      RoleEnum     `json:"role"`
 	CreatedAt time.Time    `json:"created_at"`
 	UpdatedAt time.Time    `json:"updated_at"`
 	DeletedAt sql.NullTime `json:"deleted_at"`
-	Gender    GenderEnum   `json:"gender"`
-	Role      RoleEnum     `json:"role"`
 }
