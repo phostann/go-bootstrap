@@ -31,7 +31,7 @@ type JWTConfig struct {
 	Issuer string `json:"issuer" mapstructure:"issuer"`
 }
 
-func ParseConfig() (*Config, error) {
+func Parse() (*Config, error) {
 	var config Config
 	err := ReadConfig(&config)
 	return &config, err

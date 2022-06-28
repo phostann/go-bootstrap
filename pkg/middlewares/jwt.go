@@ -14,8 +14,8 @@ import (
 type TokenType string
 
 const (
-	AccessToken  = "access_token"
-	RefreshToken = "refresh_token"
+	AccessToken  TokenType = "access_token"
+	RefreshToken TokenType = "refresh_token"
 )
 
 type CustomClaims struct {

@@ -66,7 +66,7 @@ func (a *App) addCleanTask(f CleanTask) {
 }
 
 func (a *App) Prepare() *App {
-	cfg, err := configs.ParseConfig()
+	cfg, err := configs.Parse()
 	if err != nil {
 		panic(err)
 	}
