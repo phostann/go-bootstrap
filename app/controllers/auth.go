@@ -26,7 +26,7 @@ func (c *Controller) Login(ctx *fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(response.Error(err))
 	}
-	ok := password.CheckPassordHash(req.Password, user.Password)
+	ok := password.CheckPasswordHash(req.Password, user.Password)
 	if !ok {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(response.Error(errors.New("invalid username or password")))
 	}

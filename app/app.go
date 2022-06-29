@@ -1,25 +1,22 @@
 package app
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"os"
 	"os/signal"
+	"shopping-mono/platform/database/mysql"
 	"sync"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/jackc/pgx/v4"
-
 	"shopping-mono/app/controllers"
 	"shopping-mono/app/services"
 	"shopping-mono/pkg/configs"
 	"shopping-mono/pkg/middlewares"
 	"shopping-mono/pkg/routes"
-	"shopping-mono/platform/database/postgres"
 )
 
 type CleanTask = func()
@@ -72,21 +69,14 @@ func (a *App) Prepare() *App {
 	}
 	a.Config = cfg
 
-	dsn := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable", a.Config.Database.User, a.Config.Database.Password, a.Config.Database.Host, a.Config.Database.Port, a.Config.Database.DB)
-	conn, err := pgx.Connect(context.Background(), dsn)
-	if err != nil {
-		log.Fatalf("Unable to connect to database: %v", err)
-	}
-	a.addCleanTask(func() {
-		_ = conn.Close(context.Background())
-	})
-
 	a.app.Use(recover.New())
 	a.app.Use(logger.New())
 	a.app.Use(cors.New())
 
-	queries := postgres.New(conn)
-	service := services.NewService(queries)
+	q, closeDBConn := mysql.New(a.Config)
+	a.addCleanTask(closeDBConn)
+
+	service := services.NewService(q)
 	controller := controllers.NewController(service, cfg)
 	middleware := middlewares.NewMiddleware(cfg)
 

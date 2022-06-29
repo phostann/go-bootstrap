@@ -18,12 +18,13 @@ type ServerConfig struct {
 }
 
 type DatabaseConfig struct {
-	Driver   string `json:"driver" mapstructure:"driver"`
-	Host     string `json:"host" mapstructure:"host"`
-	Port     int    `json:"port" mapstructure:"port"`
-	User     string `json:"user" mapstructure:"user"`
-	Password string `json:"password" mapstructure:"password"`
-	DB       string `json:"db" mapstructure:"db"`
+	Driver    string `json:"driver" mapstructure:"driver"`
+	Host      string `json:"host" mapstructure:"host"`
+	Port      int    `json:"port" mapstructure:"port"`
+	User      string `json:"user" mapstructure:"user"`
+	Password  string `json:"password" mapstructure:"password"`
+	DB        string `json:"db" mapstructure:"db"`
+	Migration string `json:"migration" mapstructure:"migration"`
 }
 
 type JWTConfig struct {

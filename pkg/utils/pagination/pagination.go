@@ -1,5 +1,5 @@
 package pagination
 
-func Offset(page, pageSize int32) int32 {
+func Offset(page, pageSize int) int {
 	return (page - 1) * pageSize
 }

@@ -8,7 +8,6 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 
 	"shopping-mono/pkg/response"
-	"shopping-mono/platform/database/postgres"
 )
 
 type TokenType string
@@ -19,9 +18,9 @@ const (
 )
 
 type CustomClaims struct {
-	Username string            `json:"username"`
-	Role     postgres.RoleEnum `json:"role"`
-	Type     TokenType         `json:"type"`
+	Username string    `json:"username"`
+	Role     string    `json:"role"`
+	Type     TokenType `json:"type"`
 	jwt.RegisteredClaims
 }
 

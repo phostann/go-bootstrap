@@ -3,9 +3,9 @@ package response
 type response struct {
 	Msg      string      `json:"msg,omitempty"`
 	Data     interface{} `json:"data,omitempty"`
-	Page     int32       `json:"page,omitempty"`
-	PageSize int32       `json:"page_size,omitempty"`
-	Total    int64       `json:"total,omitempty"`
+	Page     int         `json:"page,omitempty"`
+	PageSize int         `json:"page_size,omitempty"`
+	Total    int         `json:"total,omitempty"`
 }
 
 func Success(data interface{}) response {
@@ -15,7 +15,7 @@ func Success(data interface{}) response {
 	}
 }
 
-func SuccessPage(data interface{}, page, pageSize int32, total int64) response {
+func SuccessPage(data interface{}, page, pageSize int, total int) response {
 	return response{
 		Msg:      "success",
 		Data:     data,

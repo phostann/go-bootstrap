@@ -37,7 +37,7 @@ func (c *Controller) GetUserById(ctx *fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(response.Error(err))
 	}
-	req.ID = int64(id)
+	req.ID = id
 	if err := validate.Struct(req); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(response.Error(err))
 	}
@@ -58,15 +58,10 @@ func (c *Controller) UpdateUserById(ctx *fiber.Ctx) error {
 	if err := ctx.BodyParser(req); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(response.Error(err))
 	}
-	req.ID = int64(id)
+	req.ID = id
 	if err := validate.Struct(req); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(response.Error(err))
 	}
-	hash, err := password.HashPassword(req.Password)
-	if err != nil {
-		return ctx.Status(fiber.StatusInternalServerError).JSON(response.Error(err))
-	}
-	req.Password = hash
 	user, err := c.service.UpdateUserById(ctx.Context(), req)
 	if err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(response.Error(err))
@@ -81,7 +76,7 @@ func (c *Controller) DeleteUserById(ctx *fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(response.Error(err))
 	}
-	req.ID = int64(id)
+	req.ID = id
 	if err := validate.Struct(req); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(response.Error(err))
 	}

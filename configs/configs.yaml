@@ -2,13 +2,14 @@ server:
   host: 0.0.0.0
   port: 9999
 database:
-  driver: postgres
-  host: 127.0.0.1
-  port: 5432
+  driver: mysql
+  host: localhost
+  port: 12006
   user: root
-  password: password
-  db: shopping-mono
+  password: abc123456
+  db: emos
+  migration: auto
 
 jwt:
-  secret: shopping_mono_jwt_secret
+  secret: emos_jwt_secret
   issuer: phos
