@@ -5,24 +5,27 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"shopping-mono/platform/database/mysql"
 	"sync"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+
 	"shopping-mono/app/controllers"
 	"shopping-mono/app/services"
 	"shopping-mono/pkg/configs"
 	"shopping-mono/pkg/middlewares"
 	"shopping-mono/pkg/routes"
+	"shopping-mono/platform/cache/redis"
+	"shopping-mono/platform/database/mongodb"
+	"shopping-mono/platform/database/mysql"
 )
 
 type CleanTask = func()
 
 type App struct {
-	Config     *configs.Config
+	Config     configs.Config
 	app        *fiber.App
 	cleanTasks []CleanTask
 }
@@ -73,12 +76,21 @@ func (a *App) Prepare() *App {
 	a.app.Use(logger.New())
 	a.app.Use(cors.New())
 
+	// mysql
 	q, closeDBConn := mysql.New(a.Config)
 	a.addCleanTask(closeDBConn)
 
+	// mongodb
+	_, closeMongodb := mongodb.New(a.Config)
+	a.addCleanTask(closeMongodb)
+
+	// redis
+	_, closeRedis := redis.New(a.Config)
+	a.addCleanTask(closeRedis)
+
 	service := services.NewService(q)
-	controller := controllers.NewController(service, cfg)
-	middleware := middlewares.NewMiddleware(cfg)
+	controller := controllers.NewController(service, a.Config)
+	middleware := middlewares.NewMiddleware(a.Config)
 
 	routes.SetupRoutes(controller, a.app, middleware)
 

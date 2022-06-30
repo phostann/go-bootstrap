@@ -7,11 +7,11 @@ import (
 
 type Controller struct {
 	service *services.Service
-	cfg     *configs.Config
+	cfg     configs.Config
 }
 
 // NewController creates a new Controller
-func NewController(service *services.Service, cfg *configs.Config) *Controller {
+func NewController(service *services.Service, cfg configs.Config) *Controller {
 	return &Controller{
 		service: service,
 		cfg:     cfg,

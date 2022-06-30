@@ -8,8 +8,10 @@ const configPath = "./configs"
 
 type Config struct {
 	Server   ServerConfig   `json:"server" mapstructure:"server"`
-	Database DatabaseConfig `json:"database" mapstructure:"database"`
 	JWT      JWTConfig      `json:"jwt" mapstructure:"jwt"`
+	Database DatabaseConfig `json:"database" mapstructure:"database"`
+	MongoDB  MongoDBConfig  `json:"mongodb" mapstructure:"mongodb"`
+	Redis    RedisConfig    `json:"redis" mapstructure:"redis"`
 }
 
 type ServerConfig struct {
@@ -27,15 +29,30 @@ type DatabaseConfig struct {
 	Migration string `json:"migration" mapstructure:"migration"`
 }
 
+type RedisConfig struct {
+	Host     string `json:"host" mapstructure:"host"`
+	Port     int    `json:"port" mapstructure:"port"`
+	Password string `json:"password" mapstructure:"password"`
+	DB       int    `json:"db" mapstructure:"db"`
+}
+
+type MongoDBConfig struct {
+	User        string `json:"user" mapstructure:"user"`
+	Password    string `json:"password" mapstructure:"password"`
+	Host        string `json:"host" mapstructure:"host"`
+	Port        int    `json:"port" mapstructure:"port"`
+	MaxPoolSize int    `json:"max-pool-size" mapstructure:"max-pool-size"`
+}
+
 type JWTConfig struct {
 	Secret string `json:"secret" mapstructure:"secret"`
 	Issuer string `json:"issuer" mapstructure:"issuer"`
 }
 
-func Parse() (*Config, error) {
+func Parse() (Config, error) {
 	var config Config
 	err := ReadConfig(&config)
-	return &config, err
+	return config, err
 }
 
 // ReadConfig use viper to read config file

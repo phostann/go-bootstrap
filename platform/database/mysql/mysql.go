@@ -15,11 +15,12 @@ type Queries struct {
 	DB *ent.Client
 }
 
-func New(cfg *configs.Config) (*Queries, func()) {
+func New(cfg configs.Config) (*Queries, func()) {
 	client, err := ent.Open(cfg.Database.Driver, fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?parseTime=True", cfg.Database.User, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port, cfg.Database.DB))
 	if err != nil {
 		log.Fatalf("connect db failed: %v", err)
 	}
+	log.Println("connected to mysql!!!")
 
 	// auto migration
 	if cfg.Database.Migration == "auto" {

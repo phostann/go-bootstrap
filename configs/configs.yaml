@@ -1,6 +1,7 @@
 server:
   host: 0.0.0.0
   port: 9999
+
 database:
   driver: mysql
   host: localhost
@@ -8,8 +9,22 @@ database:
   user: root
   password: abc123456
   db: emos
-  migration: auto
+  # migration: auto
+
+mongodb:
+  host: localhost
+  port: 27017
+  user: admin
+  password: abc123456
+  max-pool-size: 20
+
+redis:
+  host: localhost
+  port: 6379
+  password: abc123456
+  db: 0
+
 
 jwt:
-  secret: emos_jwt_secret
+  secret: go_bootstrap_jwt_secret
   issuer: phos
